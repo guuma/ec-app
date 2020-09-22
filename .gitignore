@@ -31,3 +31,5 @@ firestore.rules
 storage.rules
 .firebase/hosting.YnVpbGQ.cache
 .vscode/snipsnap.code-snippets
+src/firebase/
+src/assets/img

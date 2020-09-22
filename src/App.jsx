@@ -1,9 +1,10 @@
 import React from 'react';
 import Router from './Router'
-import logo from './logo.svg';
-import './App.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { signInAction } from './reducks/users/actions';
+import './assets/reset.css'
+import './assets/style.css'
+import './assets/theme.js'
+// import { useDispatch, useSelector } from 'react-redux';
+// import { signInAction } from './reducks/users/actions';
 
 const App = () =>  {
   return (
