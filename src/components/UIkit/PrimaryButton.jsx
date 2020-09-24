@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
+import { theme } from '../../assets/theme';
 
 const useStyle = makeStyles({
   button: {
@@ -10,6 +11,7 @@ const useStyle = makeStyles({
     height: 48,
     marginBottom: 16,
     width: 256,
+    transition: '.5s',
   },
 });
 
