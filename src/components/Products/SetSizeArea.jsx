@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { TextInput } from '../UIkit';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 });
 
 const SetSizeArea = (props) => {
-  console.log(props.sizes);
   const classes = useStyles();
 
   const [index, setIndex] = useState(0);
@@ -46,16 +45,41 @@ const SetSizeArea = (props) => {
   );
 
   const addSize = (index, size, quantity) => {
-    if(size === '' || quantity ==='') {
+    if (size === '' || quantity === '') {
       // Required input is blank
-      return false
+      return false;
     } else {
-      props.setSizes(prevState => [...prevState, {size: size, quantity: quantity}])
-      setIndex(index + 1)
-      setSize('')
-      setQuantity(0)
+      console.log();
+      if (index === props.sizes.length) {
+        props.setSizes((prevState) => [...prevState, { size: size, quantity: quantity }]);
+        setIndex(index + 1);
+        setSize('');
+        setQuantity(0);
+      } else {
+        const newSizes = props.sizes;
+        newSizes[index] = { size: size, quantity: quantity };
+        props.setSizes(newSizes);
+        setIndex(newSizes.length);
+        setSize('');
+        setQuantity(0);
+      }
     }
-  }
+  };
+
+  const editSize = (index, size, quantity) => {
+    setIndex(index);
+    setSize(size);
+    setQuantity(quantity);
+  };
+
+  const deleteSize = (deleteIndex) => {
+    const newSizes = props.sizes.filter((item, i) => i != deleteIndex);
+    props.setSizes(newSizes);
+  };
+
+  const memoIndex = useMemo(() => {
+    setIndex(props.sizes.length);
+  }, [props.sizes.length]);
   return (
     <div>
       <TableContainer component={Paper}>
@@ -70,18 +94,21 @@ const SetSizeArea = (props) => {
           </TableHead>
           <TableBody>
             {props.sizes.length > 0 &&
-              props.sizes.map((item, index) => {
+              props.sizes.map((item, i) => {
                 return (
                   <TableRow key={item.size}>
                     <TableCell>{item.size}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>
-                      <IconButton className="{classes.iconCell}">
+                      <IconButton
+                        className="{classes.iconCell}"
+                        onClick={() => editSize(i, item.size, item.quantity)}
+                      >
                         <EditIcon />
                       </IconButton>
                     </TableCell>
                     <TableCell>
-                      <IconButton className="{classes.iconCell}">
+                      <IconButton className="{classes.iconCell}" onClick={() => deleteSize(i)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -112,8 +139,8 @@ const SetSizeArea = (props) => {
             type={'number'}
           />
         </div>
-        <IconButton className={classes.checkIcon} onClick={() => addSize(index,size,quantity)}>
-          <CheckCircleIcon/>
+        <IconButton className={classes.checkIcon} onClick={() => addSize(index, size, quantity)}>
+          <CheckCircleIcon />
         </IconButton>
       </TableContainer>
     </div>

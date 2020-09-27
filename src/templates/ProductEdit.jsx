@@ -67,6 +67,7 @@ const ProductEdit = () => {
           setCategory(data.category);
           setGender(data.gender);
           setPrice(data.price);
+          setSizes(data.sizes)
         });
     }
   }, []);
@@ -129,7 +130,7 @@ const ProductEdit = () => {
             // label =  '商品情報を保存する'  : '商品情報を登録する'
             label={'商品情報を登録する'}
             onClick={() =>
-              dispatch(saveProduct(id, name, description, category, gender, price, images))
+              dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))
             }
           />
         </div>
