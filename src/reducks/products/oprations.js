@@ -1,7 +1,24 @@
 import { db, FirebaseTimestamp } from '../../firebase';
 import { push } from 'connected-react-router';
+import { fetchProductsAction, deleteProductAction } from './actions';
 
 const productsRef = db.collection('products');
+
+export const fetchProducts = () => {
+  return async (dispatch) => {
+    productsRef
+      .orderBy('updated_at', 'desc')
+      .get()
+      .then((snapshots) => {
+        const productList = [];
+        snapshots.forEach((snapshot) => {
+          const product = snapshot.data();
+          productList.push(product);
+        });
+        dispatch(fetchProductsAction(productList));
+      });
+  };
+};
 
 export const saveProduct = (id, name, description, category, gender, price, images, sizes) => {
   return async (dispatch) => {
@@ -25,7 +42,6 @@ export const saveProduct = (id, name, description, category, gender, price, imag
       data.created_at = timestamp;
     }
 
-
     return productsRef
       .doc(id)
       .set(data, { merge: true })
@@ -34,6 +50,19 @@ export const saveProduct = (id, name, description, category, gender, price, imag
       })
       .catch((error) => {
         throw new Error(error);
+      });
+  };
+};
+
+export const deleteProduct = (id) => {
+  return async (dispatch, getState) => {
+    productsRef
+      .doc(id)
+      .delete()
+      .then(() => {
+        const prevProducts = getState().products.list;
+        const nextProducts = prevProducts.filter((product) => product.id !== id);
+        dispatch(deleteProductAction(nextProducts))
       });
   };
 };
