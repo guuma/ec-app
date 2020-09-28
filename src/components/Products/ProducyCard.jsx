@@ -60,7 +60,7 @@ const ProductCard = (props) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        image={props.images[0].path}
+        image={images[0].path}
         title=""
         onClick={() => dispatch(push('/product/' + props.id))}
       />
