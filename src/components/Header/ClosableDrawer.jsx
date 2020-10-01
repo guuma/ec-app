@@ -85,36 +85,45 @@ const ClosableDrawer = (props) => {
         classes={{ paper: classes.drawerPaper }}
         ModalProps={{ keepMounted: true }}
       >
-        <div className={classes.searchField}>
-          <TextInput
-            fullwidth={false}
-            label={'キーワードを入力'}
-            multiline={false}
-            onChange={inputKeyword}
-            required={false}
-            rows={1}
-            value={keyword}
-            type={'text'}
-          />
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {menus.map((menu) => (
-            <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)}>
-              <ListItemIcon>{menu.icon}</ListItemIcon>
-              <ListItemText primary={menu.label} />
+        <div onClose={(e) => props.onClose(e)} onKeyDown={(e) => props.onClose(e)}>
+          <div className={classes.searchField}>
+            <TextInput
+              fullwidth={false}
+              label={'キーワードを入力'}
+              multiline={false}
+              onChange={inputKeyword}
+              required={false}
+              rows={1}
+              value={keyword}
+              type={'text'}
+            />
+            <IconButton>
+              <SearchIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {menus.map((menu) => (
+              <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)}>
+                <ListItemIcon>{menu.icon}</ListItemIcon>
+                <ListItemText primary={menu.label} />
+              </ListItem>
+            ))}
+            <ListItem
+              button
+              key="logout"
+              onClick={(event) => {
+                dispatch(signOut());
+                props.onClose(event);
+              }}
+            >
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Logout'} />
             </ListItem>
-          ))}
-          <ListItem button key="logout" onClick={() => dispatch(signOut())}>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Logout'} />
-          </ListItem>
-        </List>
+          </List>
+        </div>
       </Drawer>
     </nav>
   );
