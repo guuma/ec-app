@@ -1,9 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { db } from '../firebase/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { db, FirebaseTimestamp } from '../firebase/index';
 import HTMLReactParcer from 'html-react-parser';
 import { ImageSwiper, SizeTable } from '../components/Products';
+import { addProductToCart } from '../reducks/users/operations';
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
@@ -47,6 +48,7 @@ const returnCodeToBr = (text) => {
 const ProductDetail = (props) => {
   const classes = useStyles();
   const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
   const path = selector.router.location.pathname;
   const id = path.split('/product/')[1];
   const [product, setProduct] = useState(null);
@@ -59,18 +61,37 @@ const ProductDetail = (props) => {
         setProduct(data);
       });
   }, []);
+  const addProduct = useCallback(
+    (selectedSize) => {
+      const timestamp = FirebaseTimestamp.now();
+      dispatch(
+        addProductToCart({
+          added_at: timestamp,
+          description: product.description,
+          gender: product.gender,
+          images: product.images,
+          name: product.name,
+          price: product.price,
+          productId: product.id,
+          quantity: 1,
+          size: selectedSize,
+        })
+      );
+    },
+    [product]
+  );
   return (
     <section className="c-section-wrapin">
       {product && (
         <div className="p-grid__row">
           <div className={classes.sliderBox}>
-            <ImageSwiper images={product.images}/>
+            <ImageSwiper images={product.images} />
           </div>
           <div className={classes.detail}>
             <h2 className="u-text__headline">{product.name}</h2>
             <p className={classes.price}>{product.price.toLocaleString()}</p>
             <div className="module-spacer--small" />
-            <SizeTable sizes={product.sizes}/>
+            <SizeTable sizes={product.sizes} addProduct={addProduct} />
             <div className="module-spacer--small" />
             <p>{returnCodeToBr(product.description)}</p>
           </div>
