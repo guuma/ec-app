@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { WrapText } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   row: {

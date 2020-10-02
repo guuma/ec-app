@@ -7,3 +7,4 @@ export { default as SingIn } from './SignIn';
 export { default as ResetPassword } from './ResetPassword';
 export { default as CartList } from './CartList';
 export { default as OrderConfirm } from './OrderConfirm';
+export { default as OrderHistory } from './OrderHistory';
