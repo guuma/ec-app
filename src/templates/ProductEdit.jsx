@@ -9,6 +9,7 @@ const ProductEdit = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
   const [images, setImages] = useState([]);
   const [gender, setGender] = useState('');
   const [sizes, setSizes] = useState([]);
@@ -42,12 +43,6 @@ const ProductEdit = () => {
     [setPrice]
   );
 
-  const categories = [
-    { id: 'tops', name: 'トップス' },
-    { id: 'shirts', name: 'シャツ' },
-    { id: 'pants', name: 'パンツ' },
-  ];
-
   const genders = [
     { id: 'all', name: '全て' },
     { id: 'male', name: 'メンズ' },
@@ -67,9 +62,26 @@ const ProductEdit = () => {
           setCategory(data.category);
           setGender(data.gender);
           setPrice(data.price);
-          setSizes(data.sizes)
+          setSizes(data.sizes);
         });
     }
+  }, []);
+
+  useEffect(() => {
+    db.collection('categories')
+      .orderBy('order', 'asc')
+      .get()
+      .then((snapshots) => {
+        const list = [];
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data()
+          list.push({
+            id: data.id,
+            name: data.name,
+          });
+        });
+        setCategories(list);
+      });
   }, []);
   return (
     <section>
@@ -121,10 +133,8 @@ const ProductEdit = () => {
           type={'number'}
         />
         <div className="module-spacer--small" />
-        <SetSizeArea
-        sizes={sizes} setSizes={setSizes}
-        />
-        <div className="module-spacer--small"/>
+        <SetSizeArea sizes={sizes} setSizes={setSizes} />
+        <div className="module-spacer--small" />
         <div className="center">
           <PrimaryButton
             // label =  '商品情報を保存する'  : '商品情報を登録する'

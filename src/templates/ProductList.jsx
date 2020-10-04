@@ -7,11 +7,13 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const products = getProducts(selector);
+  const query = selector.router.location.search;
+  const gender = /^\?gender=/.test(query) ? query.split('?gender=')[1] : '';
+  const category = /^\?category=/.test(query) ? query.split('?category')[1] : '';
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    dispatch(fetchProducts(gender, category));
+  }, [query]);
 
-  console.log(products);
   return (
     <section className="c-section-wrapin">
       <div className="p-grid__row">
