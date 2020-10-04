@@ -33,6 +33,12 @@
     width: calc(100% - 2rem);
 }
 
+.signin-flex, .signup-flex {
+    display: flex;
+    flex-direction: column;
+    align-Items: center;
+}
+
 .c-section__loading {
     align-items: center;
     background: rgba(255, 255, 255, 0.7);
@@ -171,4 +177,3 @@
         height: 48px
     }
 }
-

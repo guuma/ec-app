@@ -3,8 +3,19 @@ import { push } from 'connected-react-router';
 import { PrimaryButton, TextInput } from '../components/UIkit/';
 import { signIn } from '../reducks/users/operations.js';
 import { useDispatch } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+}));
 
 const SignIn = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');
@@ -21,7 +32,10 @@ const SignIn = () => {
     [setPassword]
   );
   return (
-    <div className="c-section-container">
+    <div className="c-section-container signin-flex">
+      <Avatar className={classes.avatar}>
+        <LockOutlinedIcon />
+      </Avatar>
       <h2 className="u-text__headline u-text-center">サインイン</h2>
       <div className="module-spacer--medium" />
       <TextInput
