@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
   },
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
 }));
 
 const Footer = () => {
@@ -31,7 +35,7 @@ const Footer = () => {
       <CssBaseline />
       <Container component="main" className={classes.main} maxWidth="sm"></Container>
       <footer className={classes.footer}>
-        <Container maxWidth="sm" className>
+        <Container maxWidth="sm">
           <Typography variant="body1">運営会社</Typography>
           <Typography variant="body1">利用規約</Typography>
           <Typography variant="body1">プライバシーポリシー</Typography>
