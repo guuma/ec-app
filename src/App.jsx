@@ -4,6 +4,7 @@ import './assets/reset.css';
 import './assets/style.css';
 import './assets/theme.js';
 import { Header } from './components/Header';
+import { Footer } from './components/UIkit';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <main className="c-main">
         <Router />
       </main>
+      <Footer />
     </>
   );
 };
