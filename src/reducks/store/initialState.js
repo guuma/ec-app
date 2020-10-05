@@ -1,9 +1,10 @@
 const initialState = {
   products: {
-    list: []
+    list: [],
   },
   users: {
     cart: [],
+    email: '',
     orders: [],
     isSignedIn: false,
     role: '',
