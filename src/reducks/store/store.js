@@ -5,6 +5,7 @@ import { createLogger } from 'redux-logger';
 // Import reducers
 import { UsersReducer } from '../users/reducers';
 import { ProductsReducer } from '../products/reducers';
+import { LoadingReducer } from '../loading/reducers';
 
 export default function createStore(history) {
   const middlewares = [routerMiddleware(history), thunk];
@@ -18,6 +19,7 @@ export default function createStore(history) {
   }
   return reduxCreateStore(
     combineReducers({
+      loading: LoadingReducer,
       router: connectRouter(history),
       users: UsersReducer,
       products: ProductsReducer,

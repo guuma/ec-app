@@ -2,6 +2,8 @@ import { CardElement } from '@stripe/react-stripe-js';
 import { db } from '../../firebase/index';
 import { push } from 'connected-react-router';
 import { updateUserStateAction } from '../users/actions';
+import { showLoadingAction, hideLoadingAction } from '../loading/actions';
+
 const headers = new Headers();
 headers.set('Content-type', 'application/json');
 const BASE_URL = 'https://ec-app-d6574.web.app';
@@ -59,10 +61,13 @@ export const registerCard = (stripe, elements, customerId) => {
     const username = user.username;
     console.log(user, email, uid);
 
+    dispatch(showLoadingAction('登録中...'));
     //*********************** START VALIDATION **************************//
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
+      console.error('Does not exist stripe or elements');
+      dispatch(hideLoadingAction());
       return;
     }
 
@@ -70,6 +75,11 @@ export const registerCard = (stripe, elements, customerId) => {
     // to find your CardElement because there can only ever be one of
     // each type of element.
     const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      console.error('Does not exist cardElement');
+      dispatch(hideLoadingAction());
+      return;
+    }
 
     // Use your card Element with other Stripe.js APIs
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -87,6 +97,7 @@ export const registerCard = (stripe, elements, customerId) => {
       console.log(customerData.id);
 
       if (customerData.id === '') {
+        dispatch(hideLoadingAction());
         alert('カード情報の登録に失敗しました。');
         return;
       } else {
@@ -100,10 +111,12 @@ export const registerCard = (stripe, elements, customerId) => {
           .update(updateUserState)
           .then(() => {
             dispatch(updateUserStateAction(updateUserState));
+            dispatch(hideLoadingAction());
             dispatch(push('/user/mypage'));
           })
           .catch((error) => {
             // Delete stripe customer
+            dispatch(hideLoadingAction());
             alert('カード情報の登録に失敗しました');
             return;
           });
@@ -116,6 +129,7 @@ export const registerCard = (stripe, elements, customerId) => {
         paymentMethodId
       );
       if (!updatedPaymentMethod) {
+        dispatch(hideLoadingAction());
         alert('お客様情報の登録に失敗しました。');
       } else {
         const userState = {
@@ -126,8 +140,12 @@ export const registerCard = (stripe, elements, customerId) => {
           .update(userState)
           .then(() => {
             dispatch(updateUserStateAction(userState));
+            dispatch(hideLoadingAction());
+            alert('お客様情報を更新しました。');
+            dispatch(push('/user/mypage'));
           })
           .catch((error) => {
+            dispatch(hideLoadingAction());
             alert('お客様情報の更新に失敗しました');
             return;
           });

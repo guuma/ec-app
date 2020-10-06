@@ -5,6 +5,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { PrimaryButton, TextDetail } from '../UIkit/index';
 import { registerCard, retrievePaymentMethod } from '../../reducks/payments/operations';
 import { getCustomerId, getPaymentMethodId } from '../../reducks/users/selectors';
+import { hideLoadingAction, showLoadingAction } from '../../reducks/loading/actions';
 
 const PaymentEdit = () => {
   const selector = useSelector((state) => state);
@@ -25,15 +26,17 @@ const PaymentEdit = () => {
 
   useEffect(() => {
     (async () => {
+      dispatch(showLoadingAction());
       const cardData = await retrievePaymentMethod(paymentMethodId);
+      dispatch(hideLoadingAction());
       if (cardData) {
         setCard(cardData);
       }
     })();
-  }, [paymentMethodId]);
+  }, [customerId]);
 
   const cardNumber = useMemo(() => {
-    console.log(card.last4)
+    console.log(card.last4);
     if (card.last4) {
       return '**** **** ****' + card.last4;
     } else {
@@ -46,7 +49,7 @@ const PaymentEdit = () => {
       <h2 className="u-text__headline u-text-center">クレジットカード情報入力</h2>
       <div className="module-spacer--medium" />
       <h3>現在登録しているカード情報</h3>
-      <div className="module-spacer--medium" />
+      <div className="module-spacer--small" />
       <TextDetail label={card.brand} value={cardNumber} />
       <CardElement
         options={{
