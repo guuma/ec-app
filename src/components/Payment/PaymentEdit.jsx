@@ -17,7 +17,7 @@ const PaymentEdit = () => {
   }, [dispatch]);
   return (
     <section className="c-section-container">
-      <h2 className="u-text__headline u-text-center">クレジットカード情報の登録・編集</h2>
+      <h2 className="u-text__headline u-text-center">クレジットカード情報入力</h2>
       <div className="module-spacer--medium" />
       <CardElement
         options={{

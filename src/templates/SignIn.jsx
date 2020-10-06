@@ -37,7 +37,6 @@ const SignIn = () => {
         <LockOutlinedIcon />
       </Avatar>
       <h2 className="u-text__headline u-text-center">サインイン</h2>
-      <div className="module-spacer--medium" />
       <TextInput
         fullWidth={true}
         label={'メールアドレス'}

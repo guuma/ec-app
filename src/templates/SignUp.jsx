@@ -56,7 +56,6 @@ const SignUp = () => {
         <LockOutlinedIcon />
       </Avatar>
       <h2 className="u-text__headline u-text-center">アカウント登録</h2>
-      <div className="module-spacer--medium" />
       <TextInput
         fullWidth={true}
         label={'ユーザ名'}
