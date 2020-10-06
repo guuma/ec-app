@@ -5,7 +5,7 @@ const cors = require('cors');
 const sendResponse = (response, statusCode, body) => {
   response.send({
     statusCode,
-    headers: { "Access-Control-Allow-Origin": "*" },
+    headers: { 'Access-Control-Allow-Origin': '*' },
     body: JSON.stringify(body),
   });
 };
@@ -35,6 +35,44 @@ exports.stripeCustomer = functions.https.onRequest((req, res) => {
           sendResponse(res, 500, { error: error });
         });
       });
+  });
+});
+exports.retrievePaymentMethod = functions.https.onRequest((req, res) => {
+  const corsHandler = cors({ origin: true });
+
+  corsHandler(req, res, () => {
+    // POSTメソッドかどうか判定
+    if (req.method !== 'POST') {
+      sendResponse(res, 405, { error: 'Invalid Request method!' });
+    }
+    return stripe.paymentMethods.retrieve(req.body.paymentMethodId).then((paymentMethod) => {
+      sendResponse(res, 200, paymentMethod).catch((error) => {
+        sendResponse(res, 500, { error: error });
+      });
+    });
+  });
+});
+
+exports.updatePaymentMethod = functions.https.onRequest((req, res) => {
+  const corsHandler = cors({ origin: true });
+
+  corsHandler(req, res, () => {
+    // POSTメソッドかどうか判定
+    if (req.method !== 'POST') {
+      sendResponse(res, 405, { error: 'Invalid Request method!' });
+    }
+    return stripe.paymentMethods.detach(req.body.prevPaymentMethodId).then((paymentMethod) => {
+      return stripe.paymentMethods
+        .attach(req.body.nextPaymentMethodId, {
+          customer: req.body.customerId,
+        })
+        .then((nextPaymentMethod) => {
+          sendResponse(res, 200, nextPaymentMethod);
+        })
+        .catch((error) => {
+          sendResponse(res, 500, { error: error });
+        });
+    });
   });
 });
 // // Create and Deploy Your First Cloud Functions

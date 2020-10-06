@@ -4,6 +4,8 @@ const initialState = {
   },
   users: {
     cart: [],
+    customer_id: '',
+    payment_method_id: '',
     email: '',
     orders: [],
     isSignedIn: false,

@@ -3,6 +3,8 @@ export const signInAction = (userState) => {
   return {
     type: 'SIGN_IN',
     payload: {
+      customer_id: userState.customer_id,
+      payment_method_id: userState.payment_method_id,
       email: userState.email,
       isSignedIn: true,
       role: userState.role,
