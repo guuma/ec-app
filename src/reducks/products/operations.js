@@ -82,7 +82,8 @@ export const orderProduct = (productsInCart, amount) => {
             updated_at: timestamp,
           };
           orderRef.set(history);
-          dispatch(push('/order/complete'));
+          alert('ご注文ありがとうございました！！')
+          dispatch(push('/'));
         })
         .catch(() => {
           alert('注文処理に失敗しました。通信環境をご確認のうえ、もう一度お試しください。');
