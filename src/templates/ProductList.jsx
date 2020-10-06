@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductCard, ProducuCard } from '../components/Products';
-import { fetchProducts } from '../reducks/products/operations';
+import { fetchProducts } from '../reducks/products/oprations';
 import { getProducts } from '../reducks/products/selectors';
 const ProductList = () => {
   const dispatch = useDispatch();

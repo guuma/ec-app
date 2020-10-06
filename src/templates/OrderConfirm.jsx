@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsInCart } from '../reducks/users/selectors';
-import { orderProduct } from '../reducks/products/operations';
+import { orderProduct } from '../reducks/products/oprations';
 import { makeStyles } from '@material-ui/styles';
 import { CartListItem } from '../components/Products/index';
 import List from '@material-ui/core/List';

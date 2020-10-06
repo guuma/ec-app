@@ -1,7 +1,7 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import { TextDetail } from '../UIkit';
-import { orderProduct } from '../../reducks/products/operations';
+import { orderProduct } from '../../reducks/products/oprations';
 import { OrderedProducts } from '../Products/index';
 
 const datetimeToString = (date) => {
